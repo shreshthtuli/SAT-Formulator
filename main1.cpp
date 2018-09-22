@@ -26,6 +26,13 @@ int main(int argc, char *argv[]){
         matrix[end-1][start-1] = 1;
     }
 
+    for(int i = 0; i < nodes; i++){
+        for(int j = 0; j < nodes; j++){
+            cout << matrix[i][j] << " " ;
+        }
+        cout << endl;
+    }
+
     int term = 1;
     // Every node belongs to atleast 1 group
     for(int i = 0; i < nodes; i++){
@@ -35,6 +42,8 @@ int main(int argc, char *argv[]){
         ss << 0 << endl;
         num_clauses++;
     }
+
+    // ss << "Part 1 complete\n";
 
     int bin;
     for(int i = 0; i < nodes; i++){
@@ -64,6 +73,8 @@ int main(int argc, char *argv[]){
         }
     }
 
+    // ss << "Part 2 complete\n";
+
     // Atleast 1 in each group
     for(int i = 1; i <= k; i++){
         for(int j = 0; j < nodes; j++){
@@ -72,6 +83,30 @@ int main(int argc, char *argv[]){
         ss << 0 << endl;
         num_clauses++;
     }
+
+    // ss << "Part 3 complete\n";
+
+    // Subgraph check
+    for(int i = 1; i < k+1; i++){
+        for(int j = 1; j < k+1; j++){
+            if(i == j)
+                continue;
+            bin = 0;
+            while(bin < (1 << nodes)){
+                for(int x = 0; x < nodes; x++){
+                    if((bin & (1<<(nodes-x-1))) == 0)
+                        ss << (i + k*x) << " ";
+                    else    
+                        ss << -(j + k*x) << " ";
+                }
+                bin++;
+                ss << 0 << endl;
+                num_clauses++;
+            }
+        }
+    }
+
+    // ss << "Part 4 complete\n";
 
     output << "p cnf " << nodes*k << " " << num_clauses << endl;
     output << ss.str();
