@@ -41,8 +41,8 @@ int main(int argc, char *argv[]){
     // Checking done assumping vectors sorted as minisat gives sorted output
     for(int i = 0; i < k; i++){
         for(int j = i+1; j < k; j++){
-            if((sets[i].front() < sets[j].front() && sets[i].back() > sets[j].back()) 
-            || (sets[j].front() < sets[i].front() && sets[j].back() > sets[i].back())){
+            if((sets[i].front() <= sets[j].front() && sets[i].back() >= sets[j].back()) 
+            || (sets[j].front() <= sets[i].front() && sets[j].back() >= sets[i].back())){
                 output << 0;
                 return 0;
             }
