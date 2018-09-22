@@ -73,5 +73,7 @@ int main(int argc, char *argv[]){
         num_clauses++;
     }
 
-    cout << ss.str();
+    output << "p cnf " << nodes*k << " " << num_clauses << endl;
+    output << ss.str();
+    return 0;
 }
