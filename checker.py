@@ -79,6 +79,7 @@ for line in lines:
     else:
     	i += 1
     	v = line.split(' ')
+        del v[-1]
     	if (n!=len(v)):
     		print('ERROR(Subgraph %d): Vertices not consistent'%i)
     		sys.exit(1)
