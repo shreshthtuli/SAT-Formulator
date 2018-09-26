@@ -113,5 +113,7 @@ int main(int argc, char *argv[]){
 
     ss.seekp(ios_base::beg);
     ss << "p cnf " << nodes*k << " " << num_clauses << endl;
+    ss.flush();
+    ss.close();
     return 0;
 }
