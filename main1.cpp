@@ -87,11 +87,14 @@ int main(int argc, char *argv[]){
     // ss << "Part 3 complete\n";
 
     // Subgraph check
+    // Possible logic optimizations:
+    // 1. Use subgraph info to reduce num of check. Something complement of : a subset b and b subset c, means a subset c need not be checked
+    // 2. for a subset b and b subset a use a common check
     for(int i = 1; i < k+1; i++){
         for(int j = 1; j < k+1; j++){
             if(i == j)
                 continue;
-            bin = 0;
+            bin = 1;
             while(bin < (1 << nodes)){
                 for(int x = 0; x < nodes; x++){
                     if((bin & (1<<(nodes-x-1))) == 0)
