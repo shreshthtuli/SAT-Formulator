@@ -6,20 +6,20 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     ifstream input(argv[1]);
-	ofstream output;
-	output.open(argv[2]);
+	ofstream ss;
+	ss.open(argv[2]);
 
     int nodes, edges, k, start, end;
     int num_clauses = 0;
     // optimization : num_clauses can be calculated directly
 
     input >> nodes >> edges >> k;
-    stringstream ss;
+    // stringstream ss;
 
     int **matrix = new int*[nodes];
     for(int i = 0; i < nodes; ++i)
         matrix[i] = new int[nodes]{0};
-
+    
     for(int i = 0; i < edges; i++){
         input >> start >> end;
         matrix[start-1][end-1] = 1;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]){
 
     // ss << "Part 4 complete\n";
 
-    output << "p cnf " << nodes*k << " " << num_clauses << endl;
-    output << ss.str();
+    ss.seekp(ios_base::beg);
+    ss << "p cnf " << nodes*k << " " << num_clauses << endl;
     return 0;
 }
