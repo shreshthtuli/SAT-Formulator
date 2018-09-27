@@ -6,15 +6,15 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     ifstream input(argv[1]);
-	ofstream output;
-    output.open(argv[2]);
+	ofstream ss;
+    ss.open(argv[2]);
 
     int nodes, edges, k, start, end;
-    int num_clauses = 0;
+    int num_clauses;
     // optimization : num_clauses can be calculated directly
 
     input >> nodes >> edges >> k;
-    stringstream ss;
+    // stringstream ss;
 
     int **matrix = new int*[nodes];
     for(int i = 0; i < nodes; ++i)
@@ -25,6 +25,11 @@ int main(int argc, char *argv[]){
         matrix[start-1][end-1] = 1;
         matrix[end-1][start-1] = 1;
     }
+
+    int terms = k * (nodes *k + edges);
+    num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + 3 * k * (k - 1) * nodes; 
+    ss << "p cnf " << terms << " " << num_clauses << endl;
+    num_clauses = 0;
 
     int temp, a, b;
     int term = 1;
@@ -102,10 +107,7 @@ int main(int argc, char *argv[]){
     }
 
     // ss << "Part 4 complete\n";
-
-    output << "p cnf " << term-1 << " " << num_clauses << endl;
-    output << ss.str();
-    output.flush();
-    output.close();
+    ss.flush();
+    ss.close();
     return 0;
 }
