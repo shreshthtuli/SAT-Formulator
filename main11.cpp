@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
     }
 
     int terms = k * (nodes *k + edges);
-    num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + 3 * k * (k - 1) * nodes; 
+    num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + k + edges + k * (k - 1) * (3 * nodes + 1); 
     ss << "p cnf " << terms << " " << num_clauses << endl;
     num_clauses = 0;
 
@@ -61,6 +61,7 @@ int main(int argc, char *argv[]){
                     ss << temp << " ";
                 }
                 ss << 0 << endl;
+                num_clauses++;
             }
             else{
                 // Those that are not neighbors should not have any common group
@@ -103,9 +104,11 @@ int main(int argc, char *argv[]){
                 ss << temp << " ";
             }
             ss << 0 << endl;
+            num_clauses++;
         }
     }
 
+    cout << "Num clauses : " << num_clauses << endl;
     // ss << "Part 4 complete\n";
     ss.flush();
     ss.close();
