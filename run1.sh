@@ -1,1 +1,3 @@
-./convert $1.graph $1.satinput
+#!/bin/bash
+./conv $1.graph $1.satinput
+

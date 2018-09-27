@@ -1,2 +1,4 @@
-g++ -std=c++11 -Ofast -march=native -o convert main1.cpp
-g++ -std=c++11 -Ofast -march=native -o revert main2.cpp
+#!/bin/bash
+g++ -Ofast -o conv main11.cpp
+g++ -Ofast -o rev main2.cpp
+
