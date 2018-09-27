@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
     int terms = k * (nodes *k + edges);
     num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + k + edges + k * (k - 1) * (3 * nodes + 1); 
     ss << "p cnf " << terms << " " << num_clauses << endl;
-    num_clauses = 0;
+    // num_clauses = 0;
 
     int temp, a, b;
     int term = 1;
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
             ss << term++ << " ";
         }
         ss << 0 << endl;
-        num_clauses++;
+        // num_clauses++;
     }
 
     // ss << "Part 1 complete\n";
@@ -55,19 +55,19 @@ int main(int argc, char *argv[]){
                     ss << -a << " " << -b << " " << term << " " <<  0 << endl 
                        << -term << " " << a << " " << 0 << endl
                        << -term << " " << b << " " << 0 << endl;
-                    term++; a++; b++; num_clauses+=3;
+                    term++; a++; b++; // num_clauses+=3;
                 }
                 for(; temp < term; temp++){
                     ss << temp << " ";
                 }
                 ss << 0 << endl;
-                num_clauses++;
+                // num_clauses++;
             }
             else{
                 // Those that are not neighbors should not have any common group
                 for(int x = 1; x <= k; x++){
                     ss << -a << " " << -b << " " << 0 << endl;
-                    num_clauses++; a++; b++;
+                    a++; b++; // num_cluases++;
                 }
             }
         }
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]){
             ss << k*j + i << " ";
         }
         ss << 0 << endl;
-        num_clauses++;
+        // num_clauses++;
     }
 
     // ss << "Part 3 complete\n";
@@ -97,18 +97,18 @@ int main(int argc, char *argv[]){
                 ss << -a << " " << b << " " << term << " " << 0 << endl 
                    << -term << " " << a << " " << 0 << endl 
                    << -term << " " << -b << " " << 0 << endl;
-                term++; num_clauses+=3;
+                term++; //num_clauses+=3;
                 a+=k; b+=k;
             }
             for(; temp < term; temp++){
                 ss << temp << " ";
             }
             ss << 0 << endl;
-            num_clauses++;
+            // num_clauses++;
         }
     }
 
-    cout << "Num clauses : " << num_clauses << endl;
+    // cout << "Num clauses : " << num_clauses << endl;
     // ss << "Part 4 complete\n";
     ss.flush();
     ss.close();
