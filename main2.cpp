@@ -24,17 +24,15 @@ int main(int argc, char *argv[]){
     vector<int> *sets = new vector<int>[k];
 
     // If satisfiable add to vectors
-    int num;
-    input >> num;
+    int num, node, group;
 
-    int node, group;
-    while(num != 0){
-        if(num > 0){ // add to vector
+    for(int i = 0; i < nodes*k; i++){
+        input >> num;
+        if(num > 0){
             node = (num-1) / k;
             group = (num-1) % k;
             sets[group].push_back(node);
         }
-        input >> num;
     }
 
     // If no subset write answer to file
@@ -48,5 +46,7 @@ int main(int argc, char *argv[]){
         output << endl;
     }
 
+    output.flush();
+    output.close();
     return 0;
 }
