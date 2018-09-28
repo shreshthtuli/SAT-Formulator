@@ -30,11 +30,11 @@ int main(int argc, char *argv[]){
     num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + k + edges + k * (k - 1) * (3 * nodes + 1); 
     output << "p cnf " << terms << " " << num_clauses << endl;
 
-    int temp, a, b;
+    int temp, a, b, i, j, x;
     int term = 1;
     // Every node belongs to atleast 1 group
-    for(int i = 0; i < nodes; i++){
-        for(int j = 0; j < k; j++){
+    for(i = 0; i < nodes; i++){
+        for(j = 0; j < k; j++){
             ss << term++ << " ";
         }
         ss << "0\n";
@@ -43,13 +43,13 @@ int main(int argc, char *argv[]){
     // ss << "Part 1 complete\n";
 
     temp = term;
-    for(int i = 0; i < nodes; i++){
-        for(int j = i+1; j < nodes; j ++){
+    for(i = 0; i < nodes; i++){
+        for(j = i+1; j < nodes; j ++){
             a = 1 + k*i;
             b = 1 + k*j;
-            if(matrix[i][j] == 1){
+            if(matrix[i][j] != 0){
                 // Neighbors should have atleast one common group
-                for(int x = 1; x <= k; x++){
+                for(x = 1; x <= k; x++){
                     ss << -a << " " << -b << " " << term << " 0\n"
                        << a << " " << -term << " 0\n"
                        << b << " " << -term << " 0\n";
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
             }
             else{
                 // Those that are not neighbors should not have any common group
-                for(int x = 1; x <= k; x++){
+                for(x = 1; x <= k; x++){
                     ss << -a << " " << -b << " 0\n";
                     a++; b++; 
                 }
@@ -71,20 +71,20 @@ int main(int argc, char *argv[]){
     }
 
     // Atleast 1 in each group
-    for(int i = 1; i <= k; i++){
-        for(int j = 0; j < nodes; j++){
+    for(i = 1; i <= k; i++){
+        for(j = 0; j < nodes; j++){
             ss << k*j + i << " ";
         }
         ss << "0\n";
     }
 
     // Subgraph check
-    for(int i = 1; i < k+1; i++){
-        for(int j = 1; j < k+1; j++){
+    for(i = 1; i < k+1; i++){
+        for(j = 1; j < k+1; j++){
             if(i == j)
                 continue;
             a = i; b = j;
-            for(int x = 0; x < nodes; x++){
+            for(x = 0; x < nodes; x++){
                 ss << -a << " " << b << " " << term << " 0\n" 
                    << a << " " << -term << " 0\n" 
                    << -b << " " << -term << " 0\n";
