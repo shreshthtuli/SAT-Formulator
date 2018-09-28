@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     // optimization : num_clauses can be calculated directly
 
     input >> nodes >> edges >> k;
-    stringstream ss;
+    ostringstream ss;
 
     int **matrix = new int*[nodes];
     for(int i = 0; i < nodes; ++i)
