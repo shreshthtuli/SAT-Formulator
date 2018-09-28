@@ -1,18 +1,20 @@
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
+
 int main(int argc, char *argv[]){
     ifstream input(argv[1]);
-	ofstream ss;
-    ss.open(argv[2]);
+	ofstream output;
+    output.open(argv[2]);
 
     int nodes, edges, k, start, end;
     int num_clauses;
     // optimization : num_clauses can be calculated directly
 
     input >> nodes >> edges >> k;
-    // stringstream ss;
+    stringstream ss;
 
     int **matrix = new int*[nodes];
     for(int i = 0; i < nodes; ++i)
@@ -26,7 +28,7 @@ int main(int argc, char *argv[]){
 
     int terms = k * (nodes *k + edges);
     num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + k + edges + k * (k - 1) * (3 * nodes + 1); 
-    ss << "p cnf " << terms << " " << num_clauses << endl;
+    output << "p cnf " << terms << " " << num_clauses << endl;
     // num_clauses = 0;
 
     int temp, a, b;
@@ -36,7 +38,7 @@ int main(int argc, char *argv[]){
         for(int j = 0; j < k; j++){
             ss << term++ << " ";
         }
-        ss << 0 << endl;
+        ss << "0\n";
         // num_clauses++;
     }
 
@@ -50,21 +52,21 @@ int main(int argc, char *argv[]){
             if(matrix[i][j] == 1){
                 // Neighbors should have atleast one common group
                 for(int x = 1; x <= k; x++){
-                    ss << -a << " " << -b << " " << term << " " <<  0 << endl 
-                       << a << " " << -term << " " << 0 << endl
-                       << b << " " << -term << " " << 0 << endl;
+                    ss << -a << " " << -b << " " << term << " 0\n"
+                       << a << " " << -term << " 0\n"
+                       << b << " " << -term << " 0\n";
                     term++; a++; b++; // num_clauses+=3;
                 }
                 for(; temp < term; temp++){
                     ss << temp << " ";
                 }
-                ss << 0 << endl;
+                ss << "0\n";
                 // num_clauses++;
             }
             else{
                 // Those that are not neighbors should not have any common group
                 for(int x = 1; x <= k; x++){
-                    ss << -a << " " << -b << " " << 0 << endl;
+                    ss << -a << " " << -b << " 0\n";
                     a++; b++; // num_cluases++;
                 }
             }
@@ -78,7 +80,7 @@ int main(int argc, char *argv[]){
         for(int j = 0; j < nodes; j++){
             ss << k*j + i << " ";
         }
-        ss << 0 << endl;
+        ss << "0\n";
         // num_clauses++;
     }
 
@@ -92,23 +94,24 @@ int main(int argc, char *argv[]){
             temp = term;
             a = i; b = j;
             for(int x = 0; x < nodes; x++){
-                ss << -a << " " << b << " " << term << " " << 0 << endl 
-                   << a << " " << -term << " " << 0 << endl 
-                   << -b << " " << -term << " " << 0 << endl;
+                ss << -a << " " << b << " " << term << " 0\n" 
+                   << a << " " << -term << " 0\n" 
+                   << -b << " " << -term << " 0\n";
                 term++; //num_clauses+=3;
                 a+=k; b+=k;
             }
             for(; temp < term; temp++){
                 ss << temp << " ";
             }
-            ss << 0 << endl;
+            ss << "0\n";
             // num_clauses++;
         }
     }
 
     // cout << "Num clauses : " << num_clauses << endl;
     // ss << "Part 4 complete\n";
-    ss.flush();
-    ss.close();
+    output << ss.str();
+    output.flush();
+    output.close();
     return 0;
 }
