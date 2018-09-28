@@ -1,5 +1,6 @@
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ int main(int argc, char *argv[]){
     ifstream inputG(argv[2]); // graph file
 	ofstream output;
 	output.open(argv[3]); // results file
+    stringstream ss;
 
     string sat;
     input >> sat;
@@ -38,13 +40,14 @@ int main(int argc, char *argv[]){
     int size;
     for(int i = 0; i < k; i++){
         size = sets[i].size();
-        output << "#" << (i+1) << " " << size << endl;
+        ss << "#" << (i+1) << " " << size << endl;
         for(int j = 0; j < size; j++){
-            output << sets[i].at(j)+1 << " ";
+            ss << sets[i].at(j)+1 << " ";
         }
-        output << endl;
+        ss << endl;
     }
 
+    output << ss.str();
     output.flush();
     output.close();
     return 0;
