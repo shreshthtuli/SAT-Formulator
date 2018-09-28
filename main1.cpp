@@ -14,6 +14,13 @@ int main(int argc, char *argv[]){
     // optimization : num_clauses can be calculated directly
 
     input >> nodes >> edges >> k;
+
+    // 0 edge test case
+    if(edges == 0 && k < nodes){
+        output << "p cnf 1 2\n1 0\n-1 0\n";
+        output.flush(); output.close(); return 0;
+    }
+
     ostringstream ss;
 
     int **matrix = new int*[nodes];
