@@ -29,7 +29,6 @@ int main(int argc, char *argv[]){
     int terms = k * (nodes *k + edges);
     num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + k + edges + k * (k - 1) * (3 * nodes + 1); 
     output << "p cnf " << terms << " " << num_clauses << endl;
-    // num_clauses = 0;
 
     int temp, a, b;
     int term = 1;
@@ -39,7 +38,6 @@ int main(int argc, char *argv[]){
             ss << term++ << " ";
         }
         ss << "0\n";
-        // num_clauses++;
     }
 
     // ss << "Part 1 complete\n";
@@ -55,25 +53,22 @@ int main(int argc, char *argv[]){
                     ss << -a << " " << -b << " " << term << " 0\n"
                        << a << " " << -term << " 0\n"
                        << b << " " << -term << " 0\n";
-                    term++; a++; b++; // num_clauses+=3;
+                    term++; a++; b++; 
                 }
                 for(; temp < term; temp++){
                     ss << temp << " ";
                 }
                 ss << "0\n";
-                // num_clauses++;
             }
             else{
                 // Those that are not neighbors should not have any common group
                 for(int x = 1; x <= k; x++){
                     ss << -a << " " << -b << " 0\n";
-                    a++; b++; // num_cluases++;
+                    a++; b++; 
                 }
             }
         }
     }
-
-    // ss << "Part 2 complete\n";
 
     // Atleast 1 in each group
     for(int i = 1; i <= k; i++){
@@ -81,23 +76,19 @@ int main(int argc, char *argv[]){
             ss << k*j + i << " ";
         }
         ss << "0\n";
-        // num_clauses++;
     }
-
-    // ss << "Part 3 complete\n";
 
     // Subgraph check
     for(int i = 1; i < k+1; i++){
         for(int j = 1; j < k+1; j++){
             if(i == j)
                 continue;
-            temp = term;
             a = i; b = j;
             for(int x = 0; x < nodes; x++){
                 ss << -a << " " << b << " " << term << " 0\n" 
                    << a << " " << -term << " 0\n" 
                    << -b << " " << -term << " 0\n";
-                term++; //num_clauses+=3;
+                term++; 
                 a+=k; b+=k;
             }
             for(; temp < term; temp++){
@@ -108,8 +99,6 @@ int main(int argc, char *argv[]){
         }
     }
 
-    // cout << "Num clauses : " << num_clauses << endl;
-    // ss << "Part 4 complete\n";
     output << ss.str();
     output.flush();
     output.close();
