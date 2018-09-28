@@ -1,6 +1,4 @@
 #include <fstream>
-#include <sstream>
-#include "Graph.h"
 
 using namespace std;
 
@@ -53,8 +51,8 @@ int main(int argc, char *argv[]){
                 // Neighbors should have atleast one common group
                 for(int x = 1; x <= k; x++){
                     ss << -a << " " << -b << " " << term << " " <<  0 << endl 
-                       << -term << " " << a << " " << 0 << endl
-                       << -term << " " << b << " " << 0 << endl;
+                       << a << " " << -term << " " << 0 << endl
+                       << b << " " << -term << " " << 0 << endl;
                     term++; a++; b++; // num_clauses+=3;
                 }
                 for(; temp < term; temp++){
@@ -95,8 +93,8 @@ int main(int argc, char *argv[]){
             a = i; b = j;
             for(int x = 0; x < nodes; x++){
                 ss << -a << " " << b << " " << term << " " << 0 << endl 
-                   << -term << " " << a << " " << 0 << endl 
-                   << -term << " " << -b << " " << 0 << endl;
+                   << a << " " << -term << " " << 0 << endl 
+                   << -b << " " << -term << " " << 0 << endl;
                 term++; //num_clauses+=3;
                 a+=k; b+=k;
             }
