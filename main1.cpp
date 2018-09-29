@@ -1,5 +1,8 @@
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -10,8 +13,7 @@ int main(int argc, char *argv[]){
     output.open(argv[2]);
 
     int nodes, edges, k, start, end;
-    int num_clauses;
-    // optimization : num_clauses can be calculated directly
+    int num_clauses = 0;
 
     input >> nodes >> edges >> k;
 
@@ -33,21 +35,51 @@ int main(int argc, char *argv[]){
         matrix[end-1][start-1] = 1;
     }
 
-    int terms = k * (nodes *k + edges);
-    num_clauses = nodes + (3 * edges * k) + ((nodes*(nodes-1))/2 - edges) * k + k + edges + k * (k - 1) * (3 * nodes + 1); 
-    output << "p cnf " << terms << " " << num_clauses << endl;
-
+    int terms = k * (nodes * k + edges);
     int temp, a, b, i, j, x;
-    int term = 1;
-    // Every node belongs to atleast 1 group
-    for(i = 0; i < nodes; i++){
+    int term = k+1;
+    vector<int> next;
+    bool flag;
+    int grp_assigned = 2;
+
+    // Assign first node to group 1
+    ss << "1 0\n";
+    num_clauses = 1;
+    next.push_back(0);
+    for(i = 1; i < nodes; i++){
+        flag = true;
+        for(j = 0; j < next.size(); j++){
+            flag = flag && (matrix[i][next.at(j)] == 0);
+        }
+        if(flag){
+            // Assign next node to next group and not to previous groups
+            next.push_back(i);
+            ss << i*k + grp_assigned++ << " 0\n";
+            num_clauses += (grp_assigned - 1);
+            for(x = 1; x < grp_assigned-1; x++){
+                ss << -(i*k + x) << " 0\n";
+            }
+        }
+    }
+
+    // grp_assigned > K case
+    if(grp_assigned > k){
+        output << "p cnf 1 2\n1 0\n-1 0\n";
+        output.flush(); output.close(); return 0;
+    }
+
+    // Every node belongs to atleast 1 group - check all nodes except assigned
+    for(i = 1; i < nodes; i++){
+        if(find(next.begin(), next.end(), i) != next.end()){
+            term += k;
+            continue;
+        }
         for(j = 0; j < k; j++){
             ss << term++ << " ";
         }
         ss << "0\n";
+        num_clauses++;
     }
-
-    // ss << "Part 1 complete\n";
 
     temp = term;
     for(i = 0; i < nodes; i++){
@@ -60,12 +92,13 @@ int main(int argc, char *argv[]){
                     ss << -a << " " << -b << " " << term << " 0\n"
                        << a << " " << -term << " 0\n"
                        << b << " " << -term << " 0\n";
-                    term++; a++; b++; 
+                    term++; a++; b++;
                 }
                 for(; temp < term; temp++){
                     ss << temp << " ";
                 }
                 ss << "0\n";
+                num_clauses += (3*k + 1);
             }
             else{
                 // Those that are not neighbors should not have any common group
@@ -73,16 +106,18 @@ int main(int argc, char *argv[]){
                     ss << -a << " " << -b << " 0\n";
                     a++; b++; 
                 }
+                num_clauses += k;
             }
         }
     }
 
-    // Atleast 1 in each group
-    for(i = 1; i <= k; i++){
+    // Atleast 1 in each group - check except groups 1 to grp_assigned
+    for(i = grp_assigned; i <= k; i++){
         for(j = 0; j < nodes; j++){
             ss << k*j + i << " ";
         }
         ss << "0\n";
+        num_clauses++;
     }
 
     // Subgraph check
@@ -102,10 +137,11 @@ int main(int argc, char *argv[]){
                 ss << temp << " ";
             }
             ss << "0\n";
-            // num_clauses++;
+            num_clauses += (3*nodes + 1);
         }
     }
 
+    output << "p cnf " << terms << " " << num_clauses << endl;
     output << ss.str();
     output.flush();
     output.close();
