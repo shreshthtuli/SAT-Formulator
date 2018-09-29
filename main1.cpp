@@ -13,7 +13,6 @@ int main(int argc, char *argv[]){
     output.open(argv[2]);
 
     int nodes, edges, k, start, end;
-    int num_clauses = 0;
 
     input >> nodes >> edges >> k;
 
@@ -41,10 +40,10 @@ int main(int argc, char *argv[]){
     vector<int> next;
     bool flag;
     int grp_assigned = 2;
+    int num_clauses = 1;
 
     // Assign first node to group 1
     ss << "1 0\n";
-    num_clauses = 1;
     next.push_back(0);
     for(i = 1; i < nodes; i++){
         flag = true;
@@ -55,10 +54,10 @@ int main(int argc, char *argv[]){
             // Assign next node to next group and not to previous groups
             next.push_back(i);
             ss << i*k + grp_assigned++ << " 0\n";
-            num_clauses += (grp_assigned - 1);
             for(x = 1; x < grp_assigned-1; x++){
                 ss << -(i*k + x) << " 0\n";
             }
+            num_clauses += (grp_assigned - 1);
         }
     }
 
