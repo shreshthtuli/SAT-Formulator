@@ -2,7 +2,6 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
-#include <iostream>
 
 using namespace std;
 
@@ -101,7 +100,7 @@ int main(int argc, char *argv[]){
             num_clauses += (3*nodes + 1);
         }
     }
-    
+
     for(i = 0; i < nodes; i++){
         for(j = i+1; j < nodes; j ++){
             a = 1 + k*i;
@@ -139,8 +138,6 @@ int main(int argc, char *argv[]){
         ss << "0\n";
         num_clauses++;
     }
-
-
 
     output << "p cnf " << terms << " " << num_clauses << endl;
     output << ss.str();
