@@ -81,6 +81,27 @@ int main(int argc, char *argv[]){
     }
 
     temp = term;
+    // Subgraph check
+    for(i = 1; i < k+1; i++){
+        for(j = 1; j < k+1; j++){
+            if(i == j)
+                continue;
+            a = i; b = j;
+            for(x = 0; x < nodes; x++){
+                ss << -a << " " << b << " " << term << " 0\n" 
+                   << a << " " << -term << " 0\n" 
+                   << -b << " " << -term << " 0\n";
+                term++; 
+                a+=k; b+=k;
+            }
+            for(; temp < term; temp++){
+                ss << temp << " ";
+            }
+            ss << "0\n";
+            num_clauses += (3*nodes + 1);
+        }
+    }
+    
     for(i = 0; i < nodes; i++){
         for(j = i+1; j < nodes; j ++){
             a = 1 + k*i;
@@ -119,26 +140,7 @@ int main(int argc, char *argv[]){
         num_clauses++;
     }
 
-    // Subgraph check
-    for(i = 1; i < k+1; i++){
-        for(j = 1; j < k+1; j++){
-            if(i == j)
-                continue;
-            a = i; b = j;
-            for(x = 0; x < nodes; x++){
-                ss << -a << " " << b << " " << term << " 0\n" 
-                   << a << " " << -term << " 0\n" 
-                   << -b << " " << -term << " 0\n";
-                term++; 
-                a+=k; b+=k;
-            }
-            for(; temp < term; temp++){
-                ss << temp << " ";
-            }
-            ss << "0\n";
-            num_clauses += (3*nodes + 1);
-        }
-    }
+
 
     output << "p cnf " << terms << " " << num_clauses << endl;
     output << ss.str();
